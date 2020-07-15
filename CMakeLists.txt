@@ -32,6 +32,7 @@ include_directories( include
 )
 
 add_executable(adis16475_node src/adis16475_node.cpp  src/gnss_server.cpp)
+add_dependencies(adis16475_node ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(adis16475_node ${catkin_LIBRARIES} )
 
 install(DIRECTORY include/${PROJECT_NAME}/
