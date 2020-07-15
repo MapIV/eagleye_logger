@@ -85,12 +85,6 @@ void GnssServer::isConnect()
       fd_ = 0;
     }
   }
-#if 0 /* Send Packet Print */
-  for(int h=0; h < len;h++){
-    printf("%02X ", sendbuff[h]);
-  }
-  len = 0;
-#endif
 }
 
 void GnssServer::setSendbuf(unsigned char* buf, int length)

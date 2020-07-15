@@ -27,7 +27,7 @@
 #include "sensor_msgs/Imu.h"
 #include "sensor_msgs/Temperature.h"
 #include "can_msgs/Frame.h"
-#include "logger_msgs/pps.h"
+#include "eagleye_logger_driver/pps.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,17 +91,6 @@ void parseIMUdata( unsigned char* imu_data ){
     imu_gyro[i] = ((int32_t(gyro_out[i]) << 16) + int32_t(gyro_low[i])) * M_PI / 180.0 / 2621440.0;
     imu_accl[i] = ((int32_t(accl_out[i]) << 16) + int32_t(accl_low[i])) * 9.8 / 262144000.0;
   }
-#if 0
-  printf("-------------------------------\n");
-  printf("Gyro X: %lf \n", imu_gyro[0]);
-  printf("Gyro Y: %lf \n", imu_gyro[1]);
-  printf("Gyro Z: %lf \n", imu_gyro[2]);
-  printf("Accl X: %lf \n", imu_accl[0]);
-  printf("Accl Y: %lf \n", imu_accl[1]);
-  printf("Accl Z: %lf \n", imu_accl[2]);
-  printf("Temp: %lf \n", imu_temp);
-  printf("TimeStamp: %d \n", time_stamp);
-#endif
 }
 
 class logger
@@ -218,7 +207,7 @@ public:
     // Data publisher
     sensor_data_pub_ = node_handle_.advertise<sensor_msgs::Imu>(topic_name_imu_, 100);
     vehicle_data_pub_ = node_handle_.advertise<can_msgs::Frame>(topic_name_vehicle_, 100);
-    pps_data_pub_ = node_handle_.advertise<logger_msgs::pps>(topic_name_pps_, 100);
+    pps_data_pub_ = node_handle_.advertise<eagleye_logger_driver::pps>(topic_name_pps_, 100);
 
     //GNSS server
     server.open(tcp_port);
@@ -292,7 +281,7 @@ public:
 
   void parsePPSdata(unsigned char* buf)
   {
-    logger_msgs::pps data;
+    eagleye_logger_driver::pps data;
 
     data.header.frame_id = "pps";
     data.header.stamp = ros::Time::now();
