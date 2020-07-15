@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(eagleye_logger)
+project(eagleye_logger_driver)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -21,10 +21,8 @@ include_directories( include
   ${catkin_INCLUDE_DIRS}
 )
 
-# add_executable(logger_node src/logger_node.cpp src/gnss_server.cpp src/convert_velocity.cpp)
-add_executable(logger_node src/logger_node.cpp  src/gnss_server.cpp)
-target_link_libraries(logger_node ${catkin_LIBRARIES} )
-
+add_executable(adis16470_node src/adis16470_node.cpp  src/gnss_server.cpp)
+target_link_libraries(adis16470_node ${catkin_LIBRARIES} )
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}

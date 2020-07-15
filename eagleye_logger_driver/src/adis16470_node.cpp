@@ -42,7 +42,7 @@
 #include <linux/serial.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include "eagleye_logger/gnss_server.h"
+#include "eagleye_logger_driver/gnss_server.h"
 
 unsigned char recv_buff[1024] = {0};
 
@@ -363,7 +363,7 @@ public:
 /* ------------------ */
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "eagleye_logger");
+  ros::init(argc, argv, "adis16470_node");
   ros::NodeHandle nh("~");
 
   LoggerNode node(nh);

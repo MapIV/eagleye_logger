@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: ros:kinetic
 
-    working_directory: ~/eagleye_logger
+    working_directory: ~/eagleye_logger_driver
 
     steps:
       - checkout
@@ -35,7 +35,7 @@ jobs:
     docker:
       - image: ros:melodic
 
-    working_directory: ~/eagleye_logger
+    working_directory: ~/eagleye_logger_driver
 
     steps:
       - checkout

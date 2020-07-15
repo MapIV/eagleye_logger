@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ros/ros.h"
-#include "eagleye_logger/gnss_server.h"
+#include "eagleye_logger_driver/gnss_server.h"
 
 /**
  * @brief Constructor

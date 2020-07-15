@@ -1,4 +1,5 @@
-# Eagleye logger
+# Eagleye logger driver
+[![CircleCI](https://circleci.com/gh/MapIV/eagleye_logger.svg?style=svg)](https://circleci.com/gh/MapIV/eagleye_logger)
 
 ## Overview
 

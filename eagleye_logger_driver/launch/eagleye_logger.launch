@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+  <rosparam command="load" file="$(find eagleye_logger_driver)/config/eagleye_logger.yaml"/>
+  <node pkg="eagleye_logger_driver" name="adis16470_node" type="adis16470_node" />
+
+</launch>
