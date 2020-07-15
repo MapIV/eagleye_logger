@@ -1,0 +1,7 @@
+eagleye_logger:
+ device_: "/dev/ttyACM0"
+ topic_name_imu: "/imu/data_raw"
+ topic_name_vehicle: "/vehicle/can_tx"
+ topic_name_pps: "/pps"
+ gnss_server_port: 61130
+ debug_: false
