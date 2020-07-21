@@ -44,7 +44,9 @@
 #include <unistd.h>
 #include "eagleye_logger_driver/gnss_server.h"
 
-unsigned char recv_buff[1024] = {0};
+#define GNSS_PACKECT_LEN 2
+#define CMD_NUM_MAX (79)
+#define BUFF_SIZE 1024
 
 uint32_t imu_time;
 // Gyro sensor(x, y, z)
@@ -54,11 +56,9 @@ double imu_accl[3];
 // Temperature sensor
 double imu_temp;
 
-bool isHeader;
+unsigned char recv_buff[BUFF_SIZE] = {0};
+unsigned char buff[BUFF_SIZE] = {0};
 GnssServer server;
-
-#define GNSS_PACKECT_LEN 2
-#define CMD_NUM_MAX (79)
 
 
 void parseIMUdata( unsigned char* imu_data ){
@@ -302,7 +302,6 @@ public:
   bool spin()
   {
     uint32_t i,size = 0;
-    unsigned char buff[1024] = {0};
 
     while (ros::ok())
     {
@@ -313,32 +312,45 @@ public:
 
         bool isProtcol = false;
         for(int t = 0;t < size; t++){
-          if(((buff[t]&0xFF)==0xF7)&&((buff[t+1]&0xFF)==0xE0)){
-            isProtcol = true;
-            isHeader = true;
-          }
 
-          if(isHeader){
+          if( false == isProtcol ){
+            if(((buff[t]&0xFF)==0xF7)&&((buff[t+1]&0xFF)==0xE0)){
+              isProtcol = true;
+            }
+          }else{
             if(buff[t]==0x49){
               parseIMUdata(&buff[t]);
               publish_imu_data();
               t += 32;
             }else if(buff[t]==0x50){
               uint8_t can_len = buff[t+5];
-              parseCANdata(&buff[t], can_len);
-              t += can_len + 7;
+              if( size - t < 8 + can_len ){
+                if(debug_){
+                  ROS_WARN("CAN PACKET LENGTH OVER len=%d :: PACKET SKIP", can_len );
+                }
+                t += BUFF_SIZE;
+              }else{
+                parseCANdata(&buff[t], can_len);
+                t += can_len + 7;
+              }
             }else if(buff[t]==0x47){
               uint16_t gnss_len = (( (buff[t+1]) <<8) | (buff[t+2]) );
-              memcpy(&server.sendbuff[server.len], &buff[t+3], (size_t)gnss_len);
-              server.len += gnss_len;
+              if( size - t  < gnss_len ){
+                if(debug_){
+                  ROS_WARN("GNSS PACKET LENGTH OVER len=%d :: PACKET SKIP", gnss_len );
+                }
+              }else{
+                memcpy(&server.sendbuff[server.len], &buff[t+3], (size_t)gnss_len);
+                server.len += gnss_len;
+              }
               t += gnss_len + GNSS_PACKECT_LEN;
+
             }else if(buff[t]==0x43){
               parsePPSdata(&buff[t]);
               t += 16;
             }
           }
         }
-        isHeader = false;
       }
       /* gnss server task */
       server.isConnect();
