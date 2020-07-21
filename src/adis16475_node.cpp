@@ -352,7 +352,7 @@ public:
 /* ------------------ */
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "adis16470_node");
+  ros::init(argc, argv, "adis16475_node");
   ros::NodeHandle nh("~");
 
   LoggerNode node(nh);
