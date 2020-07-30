@@ -267,7 +267,7 @@ public:
     data.header.frame_id = "vehicle";
     data.header.stamp = ros::Time::now();
 
-    uint16_t can_id = ( (*(can_data+6) <<16) | *(can_data+7) );
+    uint16_t can_id = ( (*(can_data+6) <<8) | *(can_data+7) );
     data.id = (uint32_t)can_id;
     data.is_rtr = false;
     data.is_extended = false;
